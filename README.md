@@ -50,11 +50,6 @@ TODO
 ZZU_SOFTBOY <zzu_softboy@163.com></br>
 冰冻三尺，非一日之寒。欢迎大家加入，一起玩。
 
-有什么建议，大家可以加这个微信，一起讨论</br></br>
-
-
-<img width=200px src="https://raw.githubusercontent.com/qcoreteam/zendapi/master/assets/images/zzusoftboy.png">
-
 ### License
 
 Apache License Version 2.0 see http://www.apache.org/licenses/LICENSE-2.0.html
