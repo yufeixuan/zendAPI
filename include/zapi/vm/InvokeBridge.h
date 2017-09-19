@@ -84,7 +84,7 @@ bool check_invoke_arguments(_zend_execute_data *execute_data, _zval_struct *retu
    uint32_t provided = ZEND_NUM_ARGS();
    const char *name = get_active_function_name();
    if (funcDefinedArgNumber > argNumer) {
-      zapi::warning << name << " native cpp callable definition have " << funcDefinedArgNumber << " parameter(s), " 
+      zapi::warning << name << " native cpp callable definition have " << funcDefinedArgNumber << " parameter(s), "
                     << "but register meta info given " << argNumer << " parameter(s)." << std::flush;
       RETVAL_NULL();
       return false;
@@ -94,7 +94,7 @@ bool check_invoke_arguments(_zend_execute_data *execute_data, _zval_struct *retu
       return true;
    }
    // TODO
-   zapi::warning << name << "() expects at least " << required << " parameter(s), " 
+   zapi::warning << name << "() expects at least " << required << " parameter(s), "
                  << provided << " given" << std::flush;
    RETVAL_NULL();
    return false;
@@ -119,7 +119,7 @@ public:
       }
       return ClassType(arg);
    }
-   
+
 private:
    zval *m_arguments;
 };
@@ -178,7 +178,7 @@ public:
             return;
          }
          const size_t argNumber = ZEND_NUM_ARGS();
-         zval arguments[argNumber];
+         zval arguments[16];
          zend_get_parameters_array_ex(argNumber, arguments);
          // 15 arguments is enough ?
          auto tuple = zapi::stdext::gen_tuple<16>(
@@ -241,7 +241,7 @@ public:
             return;
          }
          const size_t argNumber = ZEND_NUM_ARGS();
-         zval arguments[argNumber];
+         zval arguments[16];
          zend_get_parameters_array_ex(argNumber, arguments);
          // 15 arguments is enough ?
          auto tuple = zapi::stdext::gen_tuple<16>(
@@ -270,7 +270,7 @@ class InvokeBridgePrivate <CallableType, callable, true, false, false>
 {
 public:
    static void invoke(zend_execute_data *execute_data, zval *return_value)
-   {  
+   {
       try {
          // no variable param
          constexpr size_t paramNumber = zapi::stdext::CallableInfoTrait<CallableType>::argNum;
@@ -309,7 +309,7 @@ public:
          using ClassType = typename std::decay<typename zapi::stdext::member_pointer_traits<CallableType>::ClassType>::type;
          StdClass *nativeObject = ObjectBinder::retrieveSelfPtr(getThis())->getNativeObject();
          const size_t argNumber = ZEND_NUM_ARGS();
-         zval arguments[argNumber];
+         zval arguments[16];
          zend_get_parameters_array_ex(argNumber, arguments);
          // for class object
          auto objectTuple = std::make_tuple(static_cast<ClassType *>(nativeObject));
@@ -379,7 +379,7 @@ public:
          using ClassType = typename std::decay<typename zapi::stdext::member_pointer_traits<CallableType>::ClassType>::type;
          StdClass *nativeObject = ObjectBinder::retrieveSelfPtr(getThis())->getNativeObject();
          const size_t argNumber = ZEND_NUM_ARGS();
-         zval arguments[argNumber];
+         zval arguments[16];
          zend_get_parameters_array_ex(argNumber, arguments);
          // for class object
          auto objectTuple = std::make_tuple(static_cast<ClassType *>(nativeObject));
@@ -410,7 +410,7 @@ template <typename CallableType,
           typename std::decay<CallableType>::type callable,
           typename DecayCallableType = typename std::decay<CallableType>::type>
 class InvokeBridge : public InvokeBridgePrivate<DecayCallableType, callable,
-      std::is_member_function_pointer<DecayCallableType>::value,
+      zapi::stdext::CallableInfoTrait<DecayCallableType>::isMemberCallable,
       zapi::stdext::CallableHasReturn<DecayCallableType>::value,
       zapi::stdext::CallableInfoTrait<DecayCallableType>::hasVaridicParams>
 {};

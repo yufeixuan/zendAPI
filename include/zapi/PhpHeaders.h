@@ -11,17 +11,23 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-// Created by zzu_softboy on 05/06/2017.
+// Created by softboy on 2017/09/18.
+//
 
-#include "php/sapi/embed/php_embed.h"
-#include "gtest/gtest.h"
+#ifndef ZAPI_PHP_HEADERS_H
+#define ZAPI_PHP_HEADERS_H
 
+#include <cmath>
 
-int main(int argc, char **argv) {
-   PHP_EMBED_START_BLOCK(argc,argv);
-   char * script = const_cast<char *>(" function show_version (){echo 'hello zend api: v0.0.1';} show_version();");
-   zend_eval_string(script, NULL,
-                    const_cast<char *>("Simple Hello World App") TSRMLS_CC);
-   PHP_EMBED_END_BLOCK();
-   return 0;
-}
+// for isfinite and isnan is not correct defined issue
+using std::isfinite;
+using std::isnan;
+
+#include "zapi/CompilerDetection.h"
+#include "php/main/php.h"
+#include "php/Zend/zend_API.h"
+#include "php/Zend/zend_types.h"
+#include "php/Zend/zend_compile.h"
+
+#endif // ZAPI_PHP_HEADERS_H
+
