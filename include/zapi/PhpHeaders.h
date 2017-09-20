@@ -20,14 +20,21 @@
 #include <cmath>
 
 // for isfinite and isnan is not correct defined issue
+namespace
+{
 using std::isfinite;
 using std::isnan;
+}
 
 #include "zapi/CompilerDetection.h"
+
+extern "C"
+{
 #include "php/main/php.h"
 #include "php/Zend/zend_API.h"
 #include "php/Zend/zend_types.h"
 #include "php/Zend/zend_compile.h"
+}
 
 #endif // ZAPI_PHP_HEADERS_H
 
